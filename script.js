@@ -6,53 +6,30 @@ const mainpic = document.getElementById("mainpic");
 const blue = window.matchMedia("(max-width: 800px)");
 
 
-//switch introduction pic
-const dot = document.getElementById("dot");
-const gaming = new Audio("sounds/gaming.aac");
-var isPlaying = false;
+    const secondHand = document.querySelector(".second-hand");
+    const minuteHand = document.querySelector(".minute-hand");
+    const hourHand = document.querySelector(".hour-hand");
 
+    function setDate() {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const secondsDegrees = (seconds / 60) * 360 + 90;
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+      console.log(seconds);
 
-function addDot(){
-  dot.classList.toggle('dotter');
-  isPlaying ? gaming.pause() : gaming.play();
-}
+      const minutes = now.getMinutes();
+      const minutesDegrees = (minutes / 60) * 360 + 90;
+      minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+      console.log(minutes);
 
-gaming.onplaying = function() {
-  isPlaying = true;
-};
-gaming.onpause = function() {
-  isPlaying = false;
-};
+      const hours = now.getHours();
+      const hoursDegrees = (hours / 12) * 360 + 90;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
+      console.log(hours);
+    }
 
-gaming.addEventListener('ended', function() {
-  gaming.currentTime = 0;
-  gaming.play();
-}, false);
+    setInterval(setDate, 1000);
 
-// function switchpic() {
-//   switch (mainpic.innerHTML) {
-//     case '<img src="img/fashion/fashion1.png" alt="decorative">':
-//       mainpic.innerHTML =
-//         '<img src="img/fashion/fashion2.png" alt="decorative">';
-//       break;
-//     case '<img src="img/fashion/fashion2.png" alt="decorative">':
-//       mainpic.innerHTML =
-//         '<img src="img/fashion/fashion3.png" alt="decorative">';
-//       break;
-//     case '<img src="img/fashion/fashion3.png" alt="decorative">':
-//       mainpic.innerHTML =
-//         '<img src="img/fashion/fashion4.png" alt="decorative">';
-//       break;
-//     case '<img src="img/fashion/fashion4.png" alt="decorative">':
-//       mainpic.innerHTML =
-//         '<img src="img/fashion/fashion5.png" alt="decorative">';
-//       break;
-//     default:
-//       mainpic.innerHTML =
-//         '<img src="img/fashion/fashion1.png" alt="decorative">';
-//   }
-// }
-// setInterval(switchpic, 2000);
 
 
 
@@ -94,251 +71,218 @@ myFunction(blue);
 
 //Main Action
 
-const image = document.getElementById("image");
-const topText = document.getElementById("topText");
-const leftText = document.getElementById("left-text");
-const rightText = document.getElementById("right-text");
-const wronganswer = document.getElementById("wronganswer");
-const good = document.getElementById("good");
-// const firstPage = document.getElementById("first-page");
-const logOut = document.getElementById("logout");
-const imgContainer = document.getElementById('img-container');
-const after = document.getElementById('after');
+const clock = document.getElementById("timerClock");
+const hesitationA = document.getElementById("hesitationA");
+const hesitationB = document.getElementById("hesitationB");
+const repetitionA = document.getElementById("repetitionA");
+const repetitionB = document.getElementById("repetitionB");
+const offTopicA = document.getElementById("offTopicA");
+const offTopicB = document.getElementById("offTopicB");
+const englishA = document.getElementById("englishA");
+const englishB = document.getElementById("englishB");
+const oopsA = document.getElementById("oopsA");
+const oopsB = document.getElementById("oopsB");
+const startPause = document.getElementById("bigButton");
+const reset = document.getElementById("reset");
+const topics = document.getElementById("topics");
+const teamA = document.getElementById("teamA");
+const teamB = document.getElementById("teamB");
+const teamAscore = document.getElementById("teamAscore");
+const teamBscore = document.getElementById("teamBscore");
+const blobA = document.getElementById("blobA");
+const blobB = document.getElementById("blobB");
+const aScores = document.getElementById("aScores");
+const bScores = document.getElementById("bScores");
 
+//Change the topic to discuss
 
-// Counter for index of arrays
-let place = 0;
-let c;
-let d;
-
-// Arrays for top text and text on left and right
-const topTextArray = [
-  "Her name is Penelope.",
-  "She likes diving.",
-  "She goes to Egypt.",
-  "She lives in Barcelona.",
-  "She can speak five languages.",
-  "She's twenty years old.",
-  "Her hobby is reading.",
-  "She has a puppy called Pugsy.",
-  "She loves her red car.",
-  "She's good at chess.",
-  "She's a doctor.",
-  "She goes mountain biking.",
-  "He goes mountain biking."
+let questionsArray = [
+  "... your last holiday",
+  "... your family",
+  "... what you did last weekend",
+  "... your favorite sports",
+  "... your daily schedule",
+  "... the environment",
+  "... films you think are great",
+  "... the animal you like best",
+  "... sports you play or watch",
+  "... your home",
+  "... learning English",
+  "... your worst school subject",
+  "... your best friend",
+  "... your town",
+  "... what you do in your free time",
+  "... books you love or hate",
+  "... what you did yesterday",
+  "... the summer",
+  "... the winter",
+  "... something you really hate",
+  "... food",
+  "... your favorite day of the week",
+  "... aliens from outer space",
+  "... music you love or hate",
+  "... social media",
+  "... health and safety",
+  "... pets",
+  "... your job or school",
+  "... the sea",
+  "... America",
+  "... learning English",
+  "... is it ever OK to lie?",
+  "... your country",
 ];
 
-const leftTextArray = [
-  "How her name is?",
-  false,
-  "What likes she?",
-  false,
-  "Where she go on holiday?",
-  false,
-  "Where does she live?",
-  true,
-  "What languages can she speak?",
-  true,
-  "How old is she?",
-  true,
-  "What is her hobby?",
-  true,
-  "Have she got a pet?",
-  false,
-  "Does she like her red car?",
-  true,
-  "She is good at table games?",
-  false,
-  "What do is she?",
-  false,
-  "What does she does at the weekend?",
-  false,
-  "",
-];
+let newArray = questionsArray;
 
-const rightTextArray = [
-  "What is her name?",
-  true,
-  "What does she like?",
-  true,
-  "Where does she go on holiday?",
-  true,
-  "Where lives she?",
-  false,
-  "What languages know to speak?",
-  false,
-  "What old is she?",
-  false,
-  "What hobby she is?",
-  false,
-  "Has she got a pet?",
-  true,
-  "She likes her red car?",
-  false,
-  "Is she good at table games?",
-  true,
-  "What does she do?",
-  true,
-  "What does she do at the weekend?",
-  true,
-  "You DID IT!",
-];
-
-// Remove the landing page and/or return user to the start
-
-
-function restarter(){
-  window.location.reload();
-}
-
-function begin() {
-  place = -2;
-  nextOne();
-  after.classList.remove('blue');
-  topText.style.visibility = "hidden";
-  logOut.style.visibility = "hidden";
-//   firstPage.style.display = "none";
-//   game.style.display = "flex";
-  wronganswer.style.display = "none";
-
-}
-
-
-
-// Move on to the next 'slide'.
-
-function nextOne() {
-  place = place + 2;
-  console.log(place);
-  d = place;
-  if (place > leftTextArray.length - 2){
-    leftText.innerHTML = "";
-    rightText.innerHTML = "";
-    good.style.display = "flex";
-    wronganswer.style.display = "none";
-    after.classList.remove('blue');
-    setTimeout(restarter, 3000);
-
+function changeTopic() {
+  if (newArray.length > 1) {
+    let x = Math.floor(Math.random() * newArray.length);
+    contentQuestion.innerText = newArray[x];
+    newArray.splice(x, 1);
+    console.log(newArray);
   } else {
-    
-    
-  topText.innerText = topTextArray[d / 2];
-  
- 
-   {
-    leftText.innerText = leftTextArray[place];
-    rightText.innerText = rightTextArray[place];
-    image.src = `img/maze-peppa/slide${d / 2}.jpg`;
-  }
-}
-}
-
-// Check to see if the correct answer has been chosen
-
-
-function checkForMistakesOnLeft(clickedElement) {
-  // Check to see if game is on last page
-  if (topText.innerText === "He can swim") {
-    leftText.innerHTML = "";
-    rightText.innerHTML = "";
-    good.style.display = "flex";
-    wronganswer.style.display = "flex";
-        setTimeout(restarter, 3000);
-  } else {
-   
-    // Get innerText of clicked element and see if next item in its array is T or F
-    let a = clickedElement.innerText;
-    let b = leftTextArray.indexOf(a);
-    c = leftTextArray[b + 1];
- 
-
-    // Restart game if answer is F
-    if (c === false) {
-      wronganswer.style.display = "flex";
-    } else {
-      //Move on to next slide if answer is T
-      after.classList.add('blue');
-      topText.style.visibility = "visible";
-      logOut.style.visibility = "visible";
-      // game.style.display = "flex";
-      wronganswer.style.display = "none";
-            nextOne();
-    }
+    contentQuestion.innerHTML = `<h3 style="margin-right:5rem;">That's All Folks!</h3>`;
   }
 }
 
-// Comments same as above
-// function checkForMistakesOnRight(clickedElement) {
-//   if (topText.innerText === "He can swim") {
-//     leftText.innerHTML = "";
-//     rightText.innerHTML = "";
-//     good.style.display = "flex";
-//     wronganswer.hidden = true;
-//   } else {
-//     let a = clickedElement.innerText;
-//     let b = rightTextArray.indexOf(a);
-//     c = rightTextArray[b + 1];
+//HANDLING START AND PAUSE for the big Button
 
-//     if (c === false) {
-//       wronganswer.hidden = false;
-//     } else {
-//       after.classList.add('blue');
-//       topText.style.visibility = "visible";
-//       logOut.style.visibility = "visible";
-//     }
-//   }
-// }
-function checkForMistakesOnRight(clickedElement) {
-  if (topText.innerText === "He can swim") {
-    leftText.innerHTML = "";
-    rightText.innerHTML = "";
-    good.style.display = "flex";
-    wronganswer.style.display = "none";
-        setTimeout(restarter, 3000);
+let time = 60;
+let myInterval = -1;
+let team = true;
+
+bigButton.addEventListener("click", startClock);
+
+function startClockA() {
+  team = true;
+  aScores.textContent = "Team A";
+  bScores.textContent = "Team B";
+  startClock();
+}
+
+function startClockB() {
+  team = false;
+  aScores.textContent = "Team A";
+  bScores.textContent = "Team B";
+  startClock();
+}
+
+function startClock(event) {
+  clock.style.backgroundColor = "#ffe164";
+  clock.style.color = "#33363b";
+  if (myInterval === -1 && team === true) {
+    team = false;
+    teamAscore.style.fontWeight = "900";
+    teamBscore.style.fontWeight = "normal";
+    blobA.style.display = "block";
+    blobB.style.display = "none";
+    time === 0 ? ((time = 60), (clock.innerHTML = 60)) : (myInterval = -1);
+    myInterval = setInterval(function () {
+      time > 1
+        ? time--
+        : (clearInterval(myInterval),
+          (myInterval = -1),
+          (time = 0),
+          (clock.textContent = "0"),
+          (clock.style.backgroundColor = "#f6653c"),
+          (aScores.textContent = "START A"),
+          (bScores.textContent = "START B"),
+          (blobB.style.display = "none"),
+          (blobA.style.display = "none"),
+          (clock.style.color = "#fff"),
+          (clock.style.fontSize = "9rem"),
+          new Audio("./sounds/buzzer2.wav").play(),
+          addPointsA50(),
+          (team = false));
+      clock.innerHTML = time;
+    }, 1000);
+  } else if (myInterval === -1 && team === false) {
+    team = true;
+    teamBscore.style.fontWeight = "900";
+    teamAscore.style.fontWeight = "normal";
+    blobB.style.display = "block";
+    blobA.style.display = "none";
+    // teams();
+    time === 0 ? ((time = 60), (clock.innerHTML = 60)) : (myInterval = -1);
+    myInterval = setInterval(function () {
+      time > 1
+        ? time--
+        : (clearInterval(myInterval),
+          (myInterval = -1),
+          (time = 0),
+          (clock.textContent = "0"),
+          (aScores.textContent = "START A"),
+          (bScores.textContent = "START B"),
+          (blobB.style.display = "none"),
+          (blobA.style.display = "none"),
+          (clock.style.backgroundColor = "#f6653c"),
+          (clock.style.color = "#fff"),
+          (clock.style.fontSize = "9rem"),
+          new Audio("./sounds/buzzer2.wav").play(),
+          addPointsB50(),
+          (team = true));
+      clock.innerHTML = time;
+    }, 1000);
   } else {
-    let a = clickedElement.innerText;
-    let b = rightTextArray.indexOf(a);
-    c = rightTextArray[b + 1];
-
-    if (c === false) {
-      wronganswer.hidden = false;
-    } else {
-      after.classList.add('blue');
-      topText.style.visibility = "visible";
-      logOut.style.visibility = "visible";
-    }
+    clearInterval(myInterval);
+    myInterval = -1;
   }
 }
-function checkForMistakesOnLeft(clickedElement) {
-  if (topText.innerText === "He can swim") {
-    leftText.innerHTML = "";
-    rightText.innerHTML = "";
-    good.style.display = "flex";
-    wronganswer.style.display = "none";
-        setTimeout(restarter, 2000);
-  } else {
-    let a = clickedElement.innerText;
-    let b = leftTextArray.indexOf(a);
-    c = leftTextArray[b + 1];
 
-    if (c === false) {
-      wronganswer.style.display = "flex";
-        } else {
-      after.classList.add('blue');
-      topText.style.visibility = "visible";
-      logOut.style.visibility = "visible";
-    }
-  }
+// ADDING AND SUBTRACTING POINTS
+
+function addPointsA5() {
+  let aScore = +teamAscore.textContent - 5;
+  teamAscore.textContent = aScore;
+}
+function addPointsA10() {
+  let aScore = +teamAscore.textContent - 10;
+  teamAscore.textContent = aScore;
 }
 
-function carryOn() {
-  after.classList.remove('blue');
-  topText.style.visibility = "hidden";
-  logOut.style.visibility = "hidden";
-  nextOne();
+function addPointsA50() {
+  let aScore = +teamAscore.textContent + 50;
+  teamAscore.textContent = aScore;
 }
 
-logOut.addEventListener("click", carryOn);
-mainpic.addEventListener('click', addDot);
+function addPointsB5() {
+  let bScore = +teamBscore.textContent - 5;
+  teamBscore.textContent = bScore;
+}
+function addPointsB10() {
+  let bScore = +teamBscore.textContent - 10;
+  teamBscore.textContent = bScore;
+}
+function addPointsB50() {
+  let bScore = +teamBscore.textContent + 50;
+  teamBscore.textContent = bScore;
+}
 
-begin();
+function addPointsOopsA() {
+  let aScore = +teamAscore.textContent + 5;
+  teamAscore.textContent = aScore;
+}
+
+function addPointsOopsB() {
+  let bScore = +teamBscore.textContent + 5;
+  teamBscore.textContent = bScore;
+}
+
+function reload() {
+  location.reload();
+}
+
+hesitationA.addEventListener("click", addPointsA5);
+hesitationB.addEventListener("click", addPointsB5);
+repetitionA.addEventListener("click", addPointsA10);
+repetitionB.addEventListener("click", addPointsB10);
+offTopicA.addEventListener("click", addPointsA10);
+offTopicB.addEventListener("click", addPointsB10);
+englishA.addEventListener("click", addPointsA10);
+englishB.addEventListener("click", addPointsB10);
+oopsA.addEventListener("click", addPointsOopsA);
+oopsB.addEventListener("click", addPointsOopsB);
+reset.addEventListener("click", reload);
+topics.addEventListener("click", changeTopic);
+teamA.addEventListener("click", startClockA);
+teamB.addEventListener("click", startClockB);
